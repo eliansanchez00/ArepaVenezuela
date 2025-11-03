@@ -1,5 +1,5 @@
 // ============================
-// Barra Venezuela - Bot (Slash Commands)
+// Arepa Venezuela - Bot (Slash Commands)
 // Moderación de Mecánicos + Facturación + Logs + Bienvenida/Despedida + Tickets
 // ============================
 
@@ -99,7 +99,7 @@ function createErrorEmbed(msg) {
     .setDescription(msg)
     .setColor("#FF5555")
     .setThumbnail(LOGO)
-    .setFooter({ text: "Barra Venezuela - Bot" });
+    .setFooter({ text: "Arepa Venezuela - Bot" });
 }
 
 // ---------------------------
@@ -216,14 +216,14 @@ client.on("guildMemberAdd", async (member) => {
     const channel = guild.channels.cache.get(welcomeChannelId);
     if (channel) {
       const embed = new EmbedBuilder()
-        .setTitle("🎉 ¡Bienvenido/a a Barra Venezuela!")
+        .setTitle("🎉 ¡Bienvenido/a a Arepa Venezuela!")
         .setDescription(
           `👋 ¡Hola ${member.user}! Disfrutá tu estadía en **${guild.name}**.\n` +
             `Actualmente somos **${memberCount}** miembros.`
         )
         .setColor("#43B581")
         .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-        .setFooter({ text: "Barra Venezuela - Bot" });
+        .setFooter({ text: "Arepa Venezuela - Bot" });
       await channel.send({ embeds: [embed] });
     }
   } catch (err) {
@@ -245,7 +245,7 @@ client.on("guildMemberRemove", async (member) => {
         )
         .setColor("#F04747")
         .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-        .setFooter({ text: "Barra Venezuela - Bot" });
+        .setFooter({ text: "Arepa Venezuela - Bot" });
       await channel.send({ embeds: [embed] });
     }
   } catch (err) {
@@ -294,11 +294,11 @@ client.on("interactionCreate", async (interaction) => {
 
         const embed = new EmbedBuilder()
           .setTitle("🛠️ Servicio Iniciado")
-          .setDescription("🔧 Has comenzado tu turno en **Barra Venezuela**.")
+          .setDescription("🔧 Has comenzado tu turno en **Arepa Venezuela**.")
           .setColor("#43B581")
           .setThumbnail(LOGO)
           .addFields({ name: "🕒 Hora de inicio", value: `<t:${Math.floor(now / 1000)}:F>` })
-          .setFooter({ text: "Barra Venezuela - Bot" });
+          .setFooter({ text: "Arepa Venezuela - Bot" });
 
         await interaction.editReply({ embeds: [embed], components: [row] });
 
@@ -321,14 +321,14 @@ client.on("interactionCreate", async (interaction) => {
 
         const embed = new EmbedBuilder()
           .setTitle("🔧 Servicio Finalizado")
-          .setDescription("🚙 Has terminado tu turno en **Barra Venezuela**.")
+          .setDescription("🚙 Has terminado tu turno en **Arepa Venezuela**.")
           .setColor("#F04747")
           .setThumbnail(LOGO)
           .addFields(
             { name: "⏳ Tiempo en este turno", value: formatTime(elapsed) },
             { name: "📊 Total acumulado", value: formatTime(totalServiceTime[userId] || 0) }
           )
-          .setFooter({ text: "Barra Venezuela - Bot" });
+          .setFooter({ text: "Arepa Venezuela - Bot" });
 
         await interaction.editReply({ embeds: [embed], components: [] });
 
@@ -375,7 +375,7 @@ client.on("interactionCreate", async (interaction) => {
         .setImage(captura.url)
         .setColor("#7289DA")
         .setThumbnail(LOGO)
-        .setFooter({ text: "Barra Venezuela - Facturación" });
+        .setFooter({ text: "Arepa Venezuela - Facturación" });
 
       await interaction.editReply({ embeds: [embed] });
 
@@ -409,7 +409,7 @@ client.on("interactionCreate", async (interaction) => {
         .setColor("#00B0F4")
         .setThumbnail(user.displayAvatarURL())
         .addFields({ name: "🕒 Total acumulado", value: formatTime(total) })
-        .setFooter({ text: "Barra Venezuela - Bot" });
+        .setFooter({ text: "Arepa Venezuela - Bot" });
 
       await interaction.editReply({ embeds: [embed] });
       return;
@@ -434,7 +434,7 @@ client.on("interactionCreate", async (interaction) => {
           { name: "📄 Cantidad", value: `${list.length}`, inline: true },
           { name: "💵 Total", value: `$${Math.round(total).toLocaleString("es-ES")}`, inline: true }
         )
-        .setFooter({ text: "Barra Venezuela - Bot" });
+        .setFooter({ text: "Arepa Venezuela - Bot" });
 
       await interaction.editReply({ embeds: [embed] });
       return;
@@ -453,7 +453,7 @@ client.on("interactionCreate", async (interaction) => {
             .setTitle("🔄 Fichajes Reseteados")
             .setDescription("🧹 Se reseteó el registro de servicio y horas acumuladas.")
             .setColor("#FAA61A")
-            .setFooter({ text: "Barra Venezuela - Bot" }),
+            .setFooter({ text: "Arepa Venezuela - Bot" }),
         ],
       });
       return;
@@ -471,7 +471,7 @@ client.on("interactionCreate", async (interaction) => {
             .setTitle("🔄 Facturas Reseteadas")
             .setDescription("🧹 Se han borrado todas las facturas registradas.")
             .setColor("#FAA61A")
-            .setFooter({ text: "Barra Venezuela - Bot" }),
+            .setFooter({ text: "Arepa Venezuela - Bot" }),
         ],
       });
       return;
@@ -479,7 +479,7 @@ client.on("interactionCreate", async (interaction) => {
 
 if (commandName === "precios") {
   const embed = new EmbedBuilder()
-    .setTitle("📋 Catálogo de Servicios y Precios - Barra Venezuela")
+    .setTitle("📋 Catálogo de Servicios y Precios - Arepa Venezuela")
     .setDescription("💵 Lista oficial de precios actualizados para reparaciones y tuning:")
     .setColor("#00B0F4")
     .setThumbnail(LOGO)
@@ -494,11 +494,11 @@ if (commandName === "precios") {
 **🏎️ FULL TUNING (Carro ADDON):** $${(20000000).toLocaleString("es-ES")}  
 *(Para identificar un auto ADDON, arriba del monto del vehículo aparece un valor de $50.000)*
 
-**⚙️ CADA REPARACIÓN INDIVIDUAL:** $${(2000000).toLocaleString("es-ES")}  
-*(Pintura, ruedas o cualquier modificación se consideran una reparación individual)*
+**⚙️ CADA MODIFICACIÓN INDIVIDUAL:** $${(2000000).toLocaleString("es-ES")}  
+*(Pintura, ruedas o cualquier modificación se consideran una modificación individual)*
 `,
     })
-    .setFooter({ text: "Precios sujetos a cambios - Barra Venezuela" });
+    .setFooter({ text: "Precios sujetos a cambios - Arepa Venezuela" });
 
   await interaction.editReply({ embeds: [embed] });
   return;
@@ -538,7 +538,7 @@ if (commandName === "precios") {
           { name: "📝 Motivo", value: motivo, inline: false }
         )
         .setThumbnail(LOGO)
-        .setFooter({ text: "Barra Venezuela - Sistema Disciplinario" });
+        .setFooter({ text: "Arepa Venezuela - Sistema Disciplinario" });
 
       await interaction.editReply({ embeds: [embed] });
 
@@ -550,7 +550,7 @@ if (commandName === "precios") {
 
     if (commandName === "help") {
       const embed = new EmbedBuilder()
-        .setTitle("📜 Menú de Ayuda - Barra Venezuela")
+        .setTitle("📜 Menú de Ayuda - Arepa Venezuela")
         .setDescription("Lista de comandos disponibles (solo slash).")
         .setColor("#00B0F4")
         .setThumbnail(LOGO)
@@ -572,7 +572,7 @@ if (commandName === "precios") {
           },
           { name: "🧾 Otros", value: "`/precios` – Catálogo de servicios y precios" }
         )
-        .setFooter({ text: "Barra Venezuela - Bot" });
+        .setFooter({ text: "Arepa Venezuela - Bot" });
 
       await interaction.editReply({ embeds: [embed] });
       return;
@@ -639,7 +639,7 @@ client.on("interactionCreate", async (interaction) => {
         { name: "⏳ Tiempo en este turno", value: formatTime(elapsed) },
         { name: "📊 Total acumulado", value: formatTime(totalServiceTime[userId] || 0) }
       )
-      .setFooter({ text: "Barra Venezuela - Bot" });
+      .setFooter({ text: "Arepa Venezuela - Bot" });
 
     try {
       await interaction.message.edit({ embeds: [embed], components: [] }).catch(() => {});
