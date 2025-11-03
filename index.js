@@ -136,47 +136,63 @@ client.on('messageCreate', (message) => {
     }
   }
   
-  else if (command === 'facturar') {
-    const userId = message.author.id;
-    const numeroFactura = args[0];
-    const precio = parseFloat(args[1]);
-  
-    if (!numeroFactura || isNaN(precio)) {
-      return message.channel.send({ 
-        embeds: [createErrorEmbed('❌ Mal uso, Ejemplo: av!facturar "Numero de la factura" "Precio"')]
-      });
-    }
-  
-    if (!invoices[userId]) invoices[userId] = [];
-    invoices[userId].push({ numeroFactura, precio });
-  
-    message.channel.send({
-      embeds: [new EmbedBuilder()
-        .setTitle('💰 Factura Registrada')
-        .setDescription(`📄 Se registró la factura **#${numeroFactura}** por **$${Math.round(precio).toLocaleString('es-ES')}**.`)
-        .setColor('#7289DA')
-        .setThumbnail('https://i.postimg.cc/90Jssfkg/26b87ec005339ffd79d27e6cf031b4f3.png')
-        .setFooter({ text: '🛠️ Arepa Venezuela - Bot by:Eliann.lua' })
-      ]
+else if (command === 'facturar') {
+  const userId = message.author.id;
+  const numeroFactura = args[0];
+  const precio = parseFloat(args[1]);
+  const attachment = message.attachments.first();
+
+  // Validaciones básicas
+  if (!numeroFactura || isNaN(precio)) {
+    return message.channel.send({ 
+      embeds: [createErrorEmbed('❌ Uso incorrecto.\nEjemplo: `av!facturar <NúmeroFactura> <Precio>` y adjunta una captura de la factura.')]
     });
-  
-    const invoiceLogChannel = client.channels.cache.get(invoiceLogsChannelId);
-    if (invoiceLogChannel) {
-      const fechaHora = new Date().toLocaleString('en-US');
-      const invoiceLogEmbed = new EmbedBuilder()
-        .setTitle('Factura Generada')
-        .setDescription(`Factura generada por <@${message.author.id}>`)
-        .addFields(
-          { name: 'Número de Factura', value: `${numeroFactura}`, inline: true },
-          { name: 'Monto', value: `$${Math.round(precio).toLocaleString('es-ES')}`, inline: true },
-          { name: 'Fecha y Hora', value: `${fechaHora}`, inline: false }
-        )
-        .setColor('#7289DA')
-        .setThumbnail('https://i.postimg.cc/90Jssfkg/26b87ec005339ffd79d27e6cf031b4f3.png')
-        .setFooter({ text: 'Log de facturas - By:Eliann.lua' });
-      invoiceLogChannel.send({ embeds: [invoiceLogEmbed] });
-    }
   }
+
+  // Validación de imagen obligatoria
+  if (!attachment || !attachment.contentType?.startsWith('image/')) {
+    return message.channel.send({
+      embeds: [createErrorEmbed('📸 Debes adjuntar una captura de la factura pagada para poder registrar la facturación.')]
+    });
+  }
+
+  // Guardar factura en memoria
+  if (!invoices[userId]) invoices[userId] = [];
+  invoices[userId].push({ numeroFactura, precio, imageURL: attachment.url });
+
+  // Confirmación al mecánico
+  message.channel.send({
+    embeds: [new EmbedBuilder()
+      .setTitle('💰 Factura Registrada')
+      .setDescription(`📄 Se registró la factura **#${numeroFactura}** por **$${Math.round(precio).toLocaleString('es-ES')}**.`)
+      .setImage(attachment.url)
+      .setColor('#7289DA')
+      .setThumbnail('https://i.postimg.cc/90Jssfkg/26b87ec005339ffd79d27e6cf031b4f3.png')
+      .setFooter({ text: '🛠️ Arepa Venezuela - Bot by:Eliann.lua' })
+    ]
+  });
+
+  // Log en canal de facturas
+  const invoiceLogChannel = client.channels.cache.get(invoiceLogsChannelId);
+  if (invoiceLogChannel) {
+    const fechaHora = new Date().toLocaleString('es-ES');
+    const invoiceLogEmbed = new EmbedBuilder()
+      .setTitle('🧾 Factura Generada')
+      .setDescription(`Factura registrada por <@${message.author.id}>`)
+      .addFields(
+        { name: '📄 Número de Factura', value: `${numeroFactura}`, inline: true },
+        { name: '💵 Monto', value: `$${Math.round(precio).toLocaleString('es-ES')}`, inline: true },
+        { name: '🕒 Fecha y Hora', value: `${fechaHora}`, inline: false }
+      )
+      .setImage(attachment.url)
+      .setColor('#7289DA')
+      .setThumbnail('https://i.postimg.cc/90Jssfkg/26b87ec005339ffd79d27e6cf031b4f3.png')
+      .setFooter({ text: 'Log de facturas - By:Eliann.lua' });
+
+    invoiceLogChannel.send({ embeds: [invoiceLogEmbed] });
+  }
+}
+
   
   else if (command === 'verhoras') {
     const member = message.mentions.members.first() || message.guild.members.cache.get(args[0]) || message.member;
