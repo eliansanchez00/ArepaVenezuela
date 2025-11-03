@@ -477,48 +477,33 @@ client.on("interactionCreate", async (interaction) => {
       return;
     }
 
-    if (commandName === "precios") {
-      const embed = new EmbedBuilder()
-        .setTitle("📋 Catálogo de Servicios y Precios - Barra Venezuela")
-        .setDescription("Lista de precios de servicios más comunes.")
-        .setColor("#00B0F4")
-        .setThumbnail(LOGO)
-        .addFields(
-          {
-            name: "🛠️ Reparaciones Generales",
-            value: `
-**• Reparación de Motor:** $${(5000).toLocaleString("es-ES")}
-**• Reparación de Chasis:** $${(3500).toLocaleString("es-ES")}
-**• Cambio de Ruedas (4):** $${(1200).toLocaleString("es-ES")}
-**• Reparación de Rueda (1):** $${(400).toLocaleString("es-ES")}
-**• Kit de Reparación Básico:** $${(800).toLocaleString("es-ES")}
-`,
-          },
-          {
-            name: "🚀 Tuning de Motor",
-            value: `
-**• Turbo Nivel 1:** $${(15000).toLocaleString("es-ES")}
-**• Mejora de Frenos:** $${(8000).toLocaleString("es-ES")}
-**• Mejora de Suspensión:** $${(7500).toLocaleString("es-ES")}
-**• Mejora de Transmisión:** $${(9000).toLocaleString("es-ES")}
-`,
-          },
-          {
-            name: "🎨 Modificaciones Estéticas",
-            value: `
-**• Pintura (Sólido):** $${(4000).toLocaleString("es-ES")}
-**• Pintura (Nacarado/Mate):** $${(6500).toLocaleString("es-ES")}
-**• Alerón Básico:** $${(2500).toLocaleString("es-ES")}
-**• Neones (Kit Completo):** $${(5000).toLocaleString("es-ES")}
-**• Lunas Tintadas:** $${(1500).toLocaleString("es-ES")}
-`,
-          }
-        )
-        .setFooter({ text: "Precios sujetos a cambios" });
+if (commandName === "precios") {
+  const embed = new EmbedBuilder()
+    .setTitle("📋 Catálogo de Servicios y Precios - Barra Venezuela")
+    .setDescription("💵 Lista oficial de precios actualizados para reparaciones y tuning:")
+    .setColor("#00B0F4")
+    .setThumbnail(LOGO)
+    .addFields({
+      name: "🛠️ Servicios y Costos",
+      value: `
+**🔧 REPARACIÓN Y LIMPIEZA:** $${(500000).toLocaleString("es-ES")}  
+*(Incluye reparación completa o limpieza por igual)*
 
-      await interaction.editReply({ embeds: [embed] });
-      return;
-    }
+**🚗 FULL TUNING (Carro de Concesionario):** $${(15000000).toLocaleString("es-ES")}  
+
+**🏎️ FULL TUNING (Carro ADDON):** $${(20000000).toLocaleString("es-ES")}  
+*(Para identificar un auto ADDON, arriba del monto del vehículo aparece un valor de $50.000)*
+
+**⚙️ CADA REPARACIÓN INDIVIDUAL:** $${(2000000).toLocaleString("es-ES")}  
+*(Pintura, ruedas o cualquier modificación se consideran una reparación individual)*
+`,
+    })
+    .setFooter({ text: "Precios sujetos a cambios - Barra Venezuela" });
+
+  await interaction.editReply({ embeds: [embed] });
+  return;
+}
+
 
     if (commandName === "sancionar") {
       if (!isBoss)
@@ -701,3 +686,5 @@ client.once("ready", () => {
   console.log(`✅ Bot conectado como ${client.user.tag}`);
 });
 client.login(TOKEN);
+
+
